@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AR TECHNOLOGY STORE | Catálogo Oficial</title>
+    <title>Catálogo | AR TECHNOLOGY STORE</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -19,30 +19,22 @@
     </script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #000; color: white; margin: 0; overflow-x: hidden; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #050505; color: white; margin: 0; overflow-x: hidden; }
         
-        /* Estilo Shimmer para el Título */
         .shimmer-text {
-            background: linear-gradient(90deg, #fff, #a855f7, #fff);
-            background-size: 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: shine 3s infinite;
+            background: linear-gradient(90deg, #a855f7, #ffffff, #a855f7);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: text-shimmer 3s linear infinite;
         }
-        @keyframes shine { to { background-position: 200% center; } }
+        @keyframes text-shimmer { to { background-position: 200% center; } }
 
-        /* Banner Principal estilo AI Studio */
         .banner-yellow { 
-            background: #ffcc00; border-radius: 40px; height: 380px; position: relative; 
-            overflow: hidden; display: flex; align-items: center; padding: 0 60px;
+            background: #ffcc00; border-radius: 40px; height: 350px; 
+            position: relative; overflow: hidden; display: flex; align-items: center; padding: 0 60px;
         }
-
-        /* Botones de Marca */
-        .brand-pill { background: #111; border: 1px solid #333; padding: 10px 24px; border-radius: 14px; font-size: 11px; font-weight: 800; color: #666; cursor: pointer; transition: 0.3s; }
-        .brand-pill.active { background: #9333ea; color: white; border-color: #9333ea; }
-
-        /* Tarjeta de Producto */
-        .product-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 32px; transition: 0.4s; cursor: pointer; }
-        .product-card:hover { border-color: #9333ea; transform: translateY(-8px); }
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
@@ -53,27 +45,46 @@
     <script type="text/babel">
         import React, { useState, useEffect, useRef } from 'react';
         import { createRoot } from 'react-dom';
+        import { GoogleGenerativeAI } from "@google/genai";
 
-        const WHATSAPP_NUMBER = "51900000000"; // Reemplaza con tu número
+        // --- CONSTANTES ---
+        const WHATSAPP_NUMBER = "51900000000"; // Cambia por tu número real
+        const STORE_NAME = "AR TECHNOLOGY STORE";
 
-        // --- DATOS DEL CATÁLOGO ---
         const PRODUCTS = [
-            { id: 1, name: "Lenovo XT80 Sport", brand: "LENOVO", price: 89, oldPrice: 135, description: "Ideales para deporte, resistentes al sudor IPX7, ganchos de ajuste seguro.", img: "https://images.unsplash.com/photo-1583394838336-acd977730f90?q=80&w=500" },
-            { id: 2, name: "Monster XKT08 Gaming", brand: "MONSTER", price: 110, oldPrice: 160, description: "Baja latencia para juegos, diseño futurista transparente.", img: "https://images.unsplash.com/photo-1546435770-a3e426cd472b?q=80&w=500" },
-            { id: 3, name: "Haylou X1S Buds", brand: "HAYLOU", price: 105, oldPrice: 140, description: "Cancelación de ruido inteligente y batería de 24 horas.", img: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=500" }
+            { 
+                id: 1, 
+                name: "Lenovo XT80 Sport", 
+                brand: "LENOVO", 
+                price: 89.00, 
+                originalPrice: 135.00, 
+                description: "Ideales para deporte, resistentes al sudor IPX7, ganchos de ajuste seguro y batería de 6 horas.", 
+                imageUrl: "https://images.unsplash.com/photo-1583394838336-acd977730f90?q=80&w=500",
+                category: "Deporte"
+            },
+            { 
+                id: 2, 
+                name: "Monster XKT08 Gaming", 
+                brand: "MONSTER", 
+                price: 110.00, 
+                originalPrice: 160.00, 
+                description: "Baja latencia para juegos, sonido envolvente y diseño futurista transparente.", 
+                imageUrl: "https://images.unsplash.com/photo-1546435770-a3e426cd472b?q=80&w=500",
+                category: "Gaming"
+            }
         ];
 
-        // --- COMPONENTE CHAT IA ---
+        // --- COMPONENTE CHAT IA (WIDGET + LÓGICA) ---
         const AIChatWidget = () => {
             const [isOpen, setIsOpen] = useState(false);
-            const [messages, setMessages] = useState([{ role: 'model', text: '¡Hola! Soy tu asistente de AR Technology. ¿Buscas algo especial?' }]);
+            const [messages, setMessages] = useState([{ role: 'model', text: '¡Hola! Soy tu asistente de AR Technology. ¿Buscas algo especial en nuestro catálogo?' }]);
             const [input, setInput] = useState("");
             const [loading, setLoading] = useState(false);
             const scrollRef = useRef(null);
 
             useEffect(() => { scrollRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
 
-            const handleSend = (e) => {
+            const handleSend = async (e) => {
                 e.preventDefault();
                 if (!input.trim()) return;
                 const userMsg = input;
@@ -81,8 +92,9 @@
                 setInput("");
                 setLoading(true);
 
+                // Lógica simplificada de respuesta basada en catálogo
                 setTimeout(() => {
-                    setMessages(prev => [...prev, { role: 'model', text: "¡Claro! En AR Technology tenemos los mejores audífonos " + userMsg + ". ¿Te gustaría ver los precios?" }]);
+                    setMessages(prev => [...prev, { role: 'model', text: `¡Claro! En ${STORE_NAME} tenemos los mejores audífonos. ¿Te interesan los modelos de LENOVO o MONSTER?` }]);
                     setLoading(false);
                 }, 1000);
             };
@@ -95,21 +107,21 @@
                         </button>
                     ) : (
                         <div className="bg-[#0a0a0a] border border-white/10 w-[85vw] sm:w-96 h-[450px] rounded-3xl overflow-hidden flex flex-col shadow-2xl">
-                            <div className="bg-purple-600 p-4 flex justify-between items-center text-white font-bold text-xs">
-                                <span>ASISTENTE VIRTUAL</span>
+                            <div className="bg-purple-600 p-4 flex justify-between items-center text-white font-bold text-xs uppercase tracking-widest">
+                                <span>Asistente AR Tech</span>
                                 <button onClick={() => setIsOpen(false)}>✕</button>
                             </div>
-                            <div className="flex-1 overflow-y-auto p-4 space-y-3 no-scrollbar">
+                            <div className="flex-1 overflow-y-auto p-4 space-y-4 no-scrollbar bg-[#050505]">
                                 {messages.map((m, i) => (
                                     <div key={i} className={`p-3 rounded-2xl text-[11px] max-w-[85%] ${m.role === 'user' ? 'bg-purple-600 text-white ml-auto' : 'bg-white/5 text-gray-300'}`}>
                                         {m.text}
                                     </div>
                                 ))}
-                                {loading && <div className="text-[10px] text-purple-500 animate-pulse">Escribiendo...</div>}
+                                {loading && <div className="text-[10px] text-purple-500 animate-pulse">Analizando catálogo...</div>}
                                 <div ref={scrollRef} />
                             </div>
-                            <form onSubmit={handleSend} className="p-3 border-t border-white/10 flex gap-2">
-                                <input value={input} onChange={e => setInput(e.target.value)} placeholder="Pregunta algo..." className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs outline-none" />
+                            <form onSubmit={handleSend} className="p-3 border-t border-white/10 flex gap-2 bg-[#0a0a0a]">
+                                <input value={input} onChange={e => setInput(e.target.value)} placeholder="Escribe aquí..." className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs outline-none" />
                                 <button className="bg-purple-600 p-2 rounded-xl text-white">➜</button>
                             </form>
                         </div>
@@ -118,49 +130,70 @@
             );
         };
 
+        // --- DETALLE DE PRODUCTO ---
+        const ProductDetail = ({ product, onBack }) => {
+            const handleWhatsApp = () => {
+                const msg = `Hola, quiero comprar: ${product.name} (S/ ${product.price}). ¿Tienen stock?`;
+                window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
+            };
+
+            return (
+                <div className="min-h-screen bg-[#050505] p-6 lg:p-20">
+                    <button onClick={onBack} className="text-purple-500 font-bold mb-8 flex items-center gap-2">← VOLVER</button>
+                    <div className="flex flex-col lg:flex-row gap-12">
+                        <div className="w-full lg:w-1/2 bg-white/5 rounded-[3rem] p-10 flex items-center justify-center">
+                            <img src={product.imageUrl} className="max-h-96 object-contain" />
+                        </div>
+                        <div className="w-full lg:w-1/2">
+                            <span className="text-purple-500 font-black tracking-widest text-xs uppercase">{product.brand}</span>
+                            <h1 className="text-5xl font-black italic uppercase shimmer-text mb-6 tracking-tighter leading-none">{product.name}</h1>
+                            <div className="text-4xl font-black text-white mb-8">S/ {product.price.toFixed(2)}</div>
+                            <p className="text-gray-400 mb-10 leading-relaxed">{product.description}</p>
+                            <button onClick={handleWhatsApp} className="w-full bg-purple-600 py-5 rounded-2xl font-black tracking-widest uppercase hover:bg-green-500 transition-colors">Pedir por WhatsApp</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
         // --- APP PRINCIPAL ---
         function App() {
+            const [selected, setSelected] = useState(null);
             const [filter, setFilter] = useState('TODOS');
+
+            if (selected) return <ProductDetail product={selected} onBack={() => setSelected(null)} />;
 
             return (
                 <div className="min-h-screen pb-20">
                     <nav className="p-6 border-b border-white/5 sticky top-0 bg-black/90 backdrop-blur-md z-50 flex justify-between items-center px-10">
-                        <span className="text-2xl font-black italic shimmer-text tracking-tighter uppercase">AR TECHNOLOGY STORE</span>
+                        <span className="text-2xl font-black italic shimmer-text tracking-tighter uppercase">{STORE_NAME}</span>
                     </nav>
 
                     <main className="max-w-7xl mx-auto p-6">
-                        {/* Banner */}
                         <div className="banner-yellow mb-10">
                             <div className="z-10 relative max-w-lg">
-                                <h2 className="text-black text-7xl font-black italic uppercase leading-[0.85] mb-4 tracking-tighter">AUDIO DE<br/>ALTO NIVEL</h2>
+                                <h2 className="text-black text-7xl font-black italic uppercase leading-[0.85] mb-4 tracking-tighter leading-none">AUDIO DE<br/>ALTO NIVEL</h2>
                                 <p className="text-black/70 font-bold uppercase tracking-[0.25em] text-xs">Expertos importadores directos en Rioja.</p>
                             </div>
                             <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000" className="absolute right-0 h-full w-2/3 object-cover" style={{maskImage: 'linear-gradient(to left, black 70%, transparent)'}} />
                         </div>
 
-                        {/* Filtros */}
                         <div className="flex gap-3 overflow-x-auto no-scrollbar mb-12">
                             {['TODOS', 'LENOVO', 'MONSTER', 'EDIFIER', 'HAYLOU'].map(b => (
-                                <button key={b} onClick={() => setFilter(b)} className={`brand-pill ${filter === b ? 'active' : ''}`}>{b}</button>
+                                <button key={b} onClick={() => setFilter(b)} className={`px-8 py-3 rounded-xl font-bold text-xs ${filter === b ? 'bg-purple-600 text-white' : 'bg-white/5 text-gray-500 border border-white/10'}`}>{b}</button>
                             ))}
                         </div>
 
-                        {/* Productos */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 px-2">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                             {PRODUCTS.filter(p => filter === 'TODOS' || p.brand === filter).map(p => (
-                                <div key={p.id} className="product-card p-5 group">
-                                    <div className="relative bg-white/5 rounded-[2rem] h-52 mb-6 overflow-hidden flex items-center justify-center">
-                                        <span className="absolute top-4 left-4 bg-purple-600 text-[10px] font-black px-3 py-1 rounded-full uppercase z-10">{p.brand}</span>
-                                        <img src={p.img} className="max-h-[85%] object-contain transition-transform group-hover:scale-110" />
+                                <div key={p.id} onClick={() => setSelected(p)} className="bg-white/5 border border-white/10 rounded-[2.5rem] p-5 group cursor-pointer hover:border-purple-600 transition-all">
+                                    <div className="relative h-48 mb-6 bg-black/20 rounded-3xl overflow-hidden flex items-center justify-center">
+                                        <img src={p.imageUrl} className="max-h-[85%] object-contain group-hover:scale-110 transition-transform" />
                                     </div>
-                                    <div className="text-center">
-                                        <h4 className="font-bold text-gray-300 mb-4 uppercase text-xs tracking-tighter">{p.name}</h4>
-                                        <div className="flex justify-center items-center gap-4">
-                                            <span className="text-2xl font-black italic text-white">S/ {p.price}</span>
-                                            <button className="bg-purple-600 p-3 rounded-2xl shadow-xl shadow-purple-900/20 hover:bg-green-500 transition-colors">
-                                                🛒
-                                            </button>
-                                        </div>
+                                    <h4 className="font-bold text-white mb-4 uppercase text-sm tracking-tight">{p.name}</h4>
+                                    <div className="flex justify-between items-end">
+                                        <span className="text-2xl font-black italic">S/ {p.price}</span>
+                                        <div className="bg-purple-600 p-3 rounded-2xl shadow-lg shadow-purple-900/20">🛒</div>
                                     </div>
                                 </div>
                             ))}
