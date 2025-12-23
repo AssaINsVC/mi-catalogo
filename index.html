@@ -31,6 +31,7 @@
         }
         .brand-btn { background: #111; border: 1px solid #333; padding: 10px 25px; border-radius: 12px; font-weight: bold; font-size: 12px; color: #888; }
         .brand-btn.active { background: #9333ea; color: white; border-color: #9333ea; }
+        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #25d366; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 100; box-shadow: 0 4px 15px rgba(37,211,102,0.4); }
     </style>
 </head>
 <body>
@@ -42,55 +43,42 @@
 
         function App() {
             return (
-                <div className="min-h-screen pb-20">
-                    {/* Barra de Navegación */}
-                    <nav className="p-6 flex justify-between items-center border-b border-gray-900 sticky top-0 bg-black/80 backdrop-blur-md z-50">
-                        <div className="flex items-center gap-2">
-                            <span className="text-purple-500 font-black text-2xl italic tracking-tighter">AR TECHNOLOGY STORE</span>
-                        </div>
-                        <input type="text" placeholder="Buscar..." className="bg-[#111] border border-gray-800 rounded-full px-4 py-1 text-sm w-48 outline-none focus:border-purple-600" />
+                <div className="min-h-screen">
+                    <nav className="p-6 border-b border-gray-900 sticky top-0 bg-black/80 backdrop-blur-md z-50 flex justify-between items-center">
+                        <span className="text-purple-500 font-black text-2xl italic tracking-tighter">AR TECHNOLOGY STORE</span>
+                        <input type="text" placeholder="Buscar..." className="bg-[#111] border border-gray-800 rounded-full px-4 py-1 text-sm w-44 outline-none focus:border-purple-600" />
                     </nav>
 
-                    {/* Banner de "Audio de Alto Nivel" */}
                     <section className="p-6 max-w-7xl mx-auto">
                         <div className="banner-yellow">
                             <div className="z-10">
                                 <h2 className="text-black text-7xl font-black italic uppercase leading-[0.8] mb-4">AUDIO DE<br/>ALTO NIVEL</h2>
-                                <p className="text-black/60 font-bold uppercase tracking-[0.2em] text-sm text-center md:text-left">Expertos importadores directos en Rioja.</p>
+                                <p className="text-black/60 font-bold uppercase tracking-[0.2em] text-sm">Expertos importadores directos en Rioja.</p>
                             </div>
-                            <img 
-                                src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000" 
-                                className="absolute right-0 top-0 h-full w-2/3 object-cover" 
-                                style={{maskImage: 'linear-gradient(to left, black 70%, transparent)'}} 
-                            />
+                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000" className="absolute right-0 top-0 h-full w-2/3 object-cover" style={{maskImage: 'linear-gradient(to left, black 70%, transparent)'}} />
                         </div>
                     </section>
 
-                    {/* Filtros de Marcas */}
                     <section className="p-6 max-w-7xl mx-auto flex gap-4 overflow-x-auto">
                         <button className="brand-btn active">TODOS</button>
                         <button className="brand-btn">LENOVO</button>
                         <button className="brand-btn">MONSTER</button>
                         <button className="brand-btn">EDIFIER</button>
-                        <button className="brand-btn">HAYLOU</button>
                     </section>
 
-                    {/* Grilla de Productos */}
-                    <section className="p-6 max-w-7xl mx-auto">
-                        <h3 className="text-4xl font-black italic uppercase mb-10 border-l-8 border-purple-600 pl-4">NUESTRO CATÁLOGO</h3>
+                    <section className="p-6 max-w-7xl mx-auto pb-20">
+                        <h3 className="text-4xl font-black italic uppercase mb-10 border-l-8 border-purple-600 pl-4 text-white">NUESTRO CATÁLOGO</h3>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                            {/* Producto Ejemplo */}
-                            <div className="bg-[#0a0a0a] border border-gray-900 rounded-[2rem] p-5 hover:border-purple-600 transition-all group">
+                            <div className="bg-[#0a0a0a] border border-gray-900 rounded-[2rem] p-5 hover:border-purple-600 transition-all">
                                 <div className="bg-white/5 rounded-3xl h-48 mb-6 overflow-hidden flex items-center justify-center relative">
-                                    <span className="absolute top-3 left-3 bg-purple-600 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">LENOVO</span>
-                                    <img src="https://images.unsplash.com/photo-1583394838336-acd977730f90?q=80&w=500" className="max-h-[80%] object-contain transition-transform group-hover:scale-110" />
+                                    <span className="absolute top-3 left-3 bg-purple-600 text-[10px] font-black px-3 py-1 rounded-full uppercase">LENOVO</span>
+                                    <img src="https://images.unsplash.com/photo-1583394838336-acd977730f90?q=80&w=500" className="max-h-[80%] object-contain" />
                                 </div>
                                 <div className="text-center">
-                                    <span className="text-green-500 font-bold text-xs uppercase tracking-widest">En Stock</span>
-                                    <h4 className="font-bold text-lg text-gray-200 mt-2 mb-5 leading-tight">Lenovo XT80 Sport Original</h4>
+                                    <h4 className="font-bold text-lg text-gray-200 mb-5 leading-tight uppercase">Lenovo XT80 Sport</h4>
                                     <div className="flex justify-center items-center gap-4">
                                         <span className="text-2xl font-black italic text-white">S/ 89.00</span>
-                                        <button className="bg-purple-600 p-3 rounded-2xl hover:bg-purple-500 transition-colors shadow-lg shadow-purple-900/20">
+                                        <button className="bg-purple-600 p-3 rounded-2xl">
                                             <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
                                         </button>
                                     </div>
