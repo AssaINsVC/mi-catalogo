@@ -5,44 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Catálogo | AR TECHNOLOGY STORE</title>
     
+    <meta name="description" content="Descubre lo último en tecnología y audio de alta fidelidad en AR TECHNOLOGY STORE.">
+    <meta property="og:title" content="Catálogo AR TECHNOLOGY STORE">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000">
+    <meta name="theme-color" content="#9333ea">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
     <script type="importmap">
     {
-        "imports": {
-            "react": "https://esm.sh/react@19.0.0",
-            "react-dom": "https://esm.sh/react-dom@19.0.0",
-            "react-dom/client": "https://esm.sh/react-dom@19.0.0/client"
-        }
+      "imports": {
+        "react": "https://esm.sh/react@19.0.0",
+        "react-dom": "https://esm.sh/react-dom@19.0.0",
+        "react-dom/client": "https://esm.sh/react-dom@19.0.0/client"
+      }
     }
     </script>
 
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #050505; color: white; }
-        .header-glass {
-            background: linear-gradient(-45deg, #000000, #1a0b2e, #0f051a, #000000);
-            background-size: 400% 400%;
-            animation: mesh 15s ease infinite;
-            backdrop-filter: blur(12px);
-        }
-        @keyframes mesh {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .shimmer-text {
-            background: linear-gradient(to right, #fff 20%, #a855f7 40%, #a855f7 60%, #fff 80%);
-            background-size: 200% auto;
-            color: transparent;
-            -webkit-background-clip: text;
-            animation: shine 3s linear infinite;
-        }
-        @keyframes shine { to { background-position: 200% center; } }
+      body { font-family: 'Inter', sans-serif; margin: 0; background-color: #050505; }
+      .scrollbar-hide::-webkit-scrollbar { display: none; }
+      
+      @keyframes mesh {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
+      .header-glass {
+        background: linear-gradient(-45deg, #000000, #1a0b2e, #0f051a, #000000);
+        background-size: 400% 400%;
+        animation: mesh 15s ease infinite;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+
+      @keyframes text-shimmer {
+        0% { background-position: -200% center; }
+        100% { background-position: 200% center; }
+      }
+
+      .shimmer-text {
+        background: linear-gradient(90deg, #a855f7, #ffffff, #a855f7);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: text-shimmer 3s linear infinite;
+      }
     </style>
 </head>
-<body>
+<body class="bg-[#050505] text-gray-200 antialiased">
     <div id="root"></div>
 
     <script type="text/babel" data-type="module">
@@ -51,35 +67,45 @@
 
         function App() {
             return (
-                <div className="min-h-screen">
+                <div className="min-h-screen bg-[#050505]">
+                    {/* Header con tu animación MESH */}
                     <header className="header-glass p-10 text-center border-b border-purple-900/30">
                         <h1 className="text-5xl font-black shimmer-text mb-4 tracking-tighter">
                             AR TECHNOLOGY STORE
                         </h1>
-                        <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                        <p className="text-gray-400 text-lg max-w-2xl mx-auto font-light">
                             Audio de alto nivel. Expertos importadores directos en Rioja.
                         </p>
                     </header>
 
-                    <main className="p-6 max-w-7xl mx-auto">
-                        <h2 className="text-2xl font-bold mb-8 border-l-4 border-purple-600 pl-4 uppercase tracking-widest">
-                            NUESTRO CATÁLOGO
-                        </h2>
-                        
+                    {/* Sección de Catálogo */}
+                    <main className="p-6 max-w-7xl mx-auto mt-10">
+                        <div className="flex items-center gap-3 mb-8">
+                            <div className="h-8 w-1 bg-purple-600 rounded-full"></div>
+                            <h2 className="text-2xl font-bold uppercase tracking-widest text-white">
+                                NUESTRO CATÁLOGO
+                            </h2>
+                        </div>
+
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                            {/* Tarjeta de Producto Ejemplo */}
-                            <div className="bg-[#0f0f0f] border border-gray-800 rounded-2xl overflow-hidden hover:border-purple-500 transition-all duration-300 shadow-2xl">
-                                <img 
-                                    src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000" 
-                                    alt="Audífonos" 
-                                    className="w-full h-64 object-cover"
-                                />
-                                <div className="p-5">
-                                    <h3 className="text-xl font-bold mb-2">Audífonos High-End</h3>
-                                    <p className="text-gray-400 text-sm mb-4">Experiencia de sonido inmersiva con cancelación de ruido activa.</p>
+                            {/* Tarjeta con tu estilo original */}
+                            <div className="bg-[#0f0f0f] border border-gray-800 rounded-2xl overflow-hidden hover:border-purple-500 transition-all duration-500 shadow-2xl group">
+                                <div className="relative overflow-hidden h-72">
+                                    <img 
+                                        src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000" 
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        alt="Audífonos"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f0f] to-transparent opacity-60"></div>
+                                </div>
+                                <div className="p-6">
+                                    <h3 className="text-xl font-bold text-white mb-2">Audífonos High-End</h3>
+                                    <p className="text-gray-400 text-sm mb-6 leading-relaxed">
+                                        Experiencia de sonido inmersiva con cancelación de ruido activa profesional.
+                                    </p>
                                     <div className="flex justify-between items-center">
-                                        <span className="text-2xl font-black text-purple-400">S/ 299.00</span>
-                                        <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-bold transition-colors">
+                                        <span className="text-2xl font-black text-purple-400 tracking-tighter">S/ 299.00</span>
+                                        <button className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2.5 rounded-xl font-bold transition-colors shadow-lg shadow-purple-900/20 uppercase text-xs">
                                             Consultar
                                         </button>
                                     </div>
@@ -88,7 +114,7 @@
                         </div>
                     </main>
 
-                    <footer className="p-10 text-center text-gray-600 text-sm border-t border-gray-900">
+                    <footer className="mt-20 p-10 text-center border-t border-gray-900 text-gray-600 text-sm">
                         © 2025 AR TECHNOLOGY STORE - Rioja, San Martín.
                     </footer>
                 </div>
