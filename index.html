@@ -1,79 +1,44 @@
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Catálogo | AR TECHNOLOGY STORE</title>
-    
-    <!-- SEO y Meta Tags para Redes Sociales (WhatsApp, Facebook) -->
-    <meta name="description" content="Descubre lo último en tecnología y audio de alta fidelidad en AR TECHNOLOGY STORE. Importadores directos en Rioja.">
-    <meta property="og:title" content="Catálogo AR TECHNOLOGY STORE">
-    <meta property="og:description" content="Mira nuestros productos y haz tu pedido directamente por WhatsApp. ¡Calidad garantizada!">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000">
-    <meta property="og:type" content="website">
-    <meta name="theme-color" content="#9333ea">
+<script type="module">
+    import React from 'react';
+    import { createRoot } from 'react-dom/client';
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <style>
-      body { font-family: 'Inter', sans-serif; }
-      
-      .scrollbar-hide::-webkit-scrollbar { display: none; }
-      .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    function App() {
+        return (
+            <div className="min-h-screen bg-[#050505]">
+                {/* Header / Hero */}
+                <header className="header-glass p-10 text-center border-b border-purple-900/30">
+                    <h1 className="text-5xl font-black shimmer-text mb-4 tracking-tighter">
+                        AR TECHNOLOGY STORE
+                    </h1>
+                    <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                        Audio de alto nivel. Expertos importadores directos en Rioja.
+                    </p>
+                </header>
 
-      @keyframes mesh {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-      }
+                {/* Grid de Productos - Ejemplo */}
+                <main className="p-6 max-w-7xl mx-auto">
+                    <h2 className="text-2xl font-bold mb-8 border-l-4 border-purple-600 pl-4">NUESTRO CATÁLOGO</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {/* Tarjeta de Producto */}
+                        <div className="bg-[#0f0f0f] border border-gray-800 rounded-2xl overflow-hidden hover:border-purple-500 transition-all duration-300">
+                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000" className="w-full h-64 object-cover" alt="Producto" />
+                            <div className="p-5">
+                                <h3 className="text-xl font-bold mb-2">Audífonos High-End</h3>
+                                <p className="text-gray-400 text-sm mb-4">Experiencia de sonido inmersiva con cancelación de ruido.</p>
+                                <div className="flex justify-between items-center">
+                                    <span className="text-purple-400 font-black text-xl">S/ 180.00</span>
+                                    <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-bold transition">
+                                        WhatsApp
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        );
+    }
 
-      .header-glass {
-        background: linear-gradient(-45deg, #000000, #1a0b2e, #0f051a, #000000);
-        background-size: 400% 400%;
-        animation: mesh 15s ease infinite;
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-      }
-
-      @keyframes kenBurns {
-        0% { transform: scale(1) translate(0, 0); }
-        50% { transform: scale(1.1) translate(-1%, -1%); }
-        100% { transform: scale(1) translate(0, 0); }
-      }
-      .animate-tech-bg {
-        animation: kenBurns 20s ease-in-out infinite;
-      }
-
-      @keyframes text-shimmer {
-        0% { background-position: -200% center; }
-        100% { background-position: 200% center; }
-      }
-      .shimmer-text {
-        background: linear-gradient(90deg, #a855f7, #ffffff, #a855f7);
-        background-size: 200% auto;
-        -webkit-background-clip: text;
-        background-clip: text;
-        animation: text-shimmer 3s linear infinite;
-      }
-
-      /* Suavizado de scroll para móviles */
-      .snap-x {
-        scroll-behavior: smooth;
-        -webkit-overflow-scrolling: touch;
-      }
-    </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3",
-    "@google/genai": "https://esm.sh/@google/genai@^1.34.0"
-  }
-}
+    const root = createRoot(document.getElementById('root'));
+    root.render(<App />);
 </script>
-</head>
-  <body class="bg-[#050505] text-gray-200 antialiased">
-    <div id="root"></div>
-  </body>
-</html>
