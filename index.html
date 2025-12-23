@@ -3,89 +3,145 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AR TECHNOLOGY STORE | Catálogo</title>
-    
+    <title>AR TECHNOLOGY STORE | Catálogo Oficial con IA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
     <script type="importmap">
     {
       "imports": {
         "react": "https://esm.sh/react@19.0.0",
-        "react-dom": "https://esm.sh/react-dom@19.0.0/client"
+        "react-dom": "https://esm.sh/react-dom@19.0.0/client",
+        "@google/genai": "https://esm.sh/@google/genai@1.34.0"
       }
     }
     </script>
-
     <style>
-        body { background-color: #000; color: white; font-family: sans-serif; margin: 0; }
-        .banner-yellow { 
-            background: #ffcc00; 
-            border-radius: 40px; 
-            height: 350px; 
-            position: relative; 
-            overflow: hidden; 
-            display: flex; 
-            align-items: center; 
-            padding: 0 60px;
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #050505; color: white; margin: 0; overflow-x: hidden; }
+        .shimmer-text {
+            background: linear-gradient(90deg, #a855f7, #ffffff, #a855f7);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: text-shimmer 3s linear infinite;
         }
-        .brand-btn { background: #111; border: 1px solid #333; padding: 10px 25px; border-radius: 12px; font-weight: bold; font-size: 12px; color: #888; }
-        .brand-btn.active { background: #9333ea; color: white; border-color: #9333ea; }
-        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #25d366; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 100; box-shadow: 0 4px 15px rgba(37,211,102,0.4); }
+        @keyframes text-shimmer { to { background-position: 200% center; } }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .banner-yellow { background: #ffcc00; border-radius: 40px; min-height: 350px; position: relative; overflow: hidden; display: flex; align-items: center; padding: 40px; }
     </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        import React from 'react';
+        import React, { useState, useEffect, useRef } from 'react';
         import { createRoot } from 'react-dom';
 
+        const WHATSAPP_NUMBER = "51900000000"; // Pon tu número de Rioja aquí
+
+        const PRODUCTS = [
+            { id: 1, name: "Lenovo XT80 Sport", category: "LENOVO", price: 89.00, originalPrice: 135.00, description: "Ideales para deporte, resistentes al sudor IPX7, ganchos de ajuste seguro.", imageUrl: "https://images.unsplash.com/photo-1583394838336-acd977730f90?q=80&w=500" },
+            { id: 2, name: "Monster XKT08 Gaming", category: "MONSTER", price: 110.00, originalPrice: 160.00, description: "Baja latencia para juegos, diseño futurista transparente.", imageUrl: "https://images.unsplash.com/photo-1546435770-a3e426cd472b?q=80&w=500" }
+        ];
+
+        // --- COMPONENTE AIChatWidget (Tu código integrado) ---
+        const AIChatWidget = () => {
+            const [isOpen, setIsOpen] = useState(false);
+            const [messages, setMessages] = useState([{ role: 'model', text: '¡Hola! Soy tu asistente de AR Technology. ¿Buscas algo especial?' }]);
+            const [inputText, setInputText] = useState('');
+            const [isLoading, setIsLoading] = useState(false);
+            const messagesEndRef = useRef(null);
+
+            useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, isOpen]);
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                if (!inputText.trim()) return;
+                setMessages(prev => [...prev, { role: 'user', text: inputText }]);
+                setInputText('');
+                setIsLoading(true);
+                // Simulación de IA (Aquí se conectaría con GeminiService)
+                setTimeout(() => {
+                    setMessages(prev => [...prev, { role: 'model', text: "¡Claro! Tenemos los " + PRODUCTS[0].name + " en oferta. ¿Te gustaría verlos?" }]);
+                    setIsLoading(false);
+                }, 1000);
+            };
+
+            return (
+                <div className="fixed bottom-6 right-6 z-[100]">
+                    {!isOpen ? (
+                        <button onClick={() => setIsOpen(true)} className="bg-purple-600 text-white rounded-full p-4 shadow-2xl hover:scale-110 transition-all w-16 h-16 border border-white/20 flex items-center justify-center">
+                            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+                        </button>
+                    ) : (
+                        <div className="bg-[#0a0a0a] rounded-3xl shadow-2xl w-[85vw] sm:w-96 border border-white/10 h-[450px] flex flex-col overflow-hidden animate-fade-in">
+                            <div className="p-4 bg-purple-600 flex justify-between items-center text-white font-bold text-xs uppercase tracking-widest">
+                                <span>Asistente AR Tech</span>
+                                <button onClick={() => setIsOpen(false)}>✕</button>
+                            </div>
+                            <div className="flex-grow p-4 overflow-y-auto space-y-4 bg-[#050505] no-scrollbar">
+                                {messages.map((m, i) => (
+                                    <div key={i} className={`p-3 rounded-2xl text-[11px] max-w-[85%] ${m.role === 'user' ? 'bg-purple-600 text-white ml-auto' : 'bg-white/5 border border-white/10 text-gray-300'}`}>
+                                        {m.text}
+                                    </div>
+                                ))}
+                                <div ref={messagesEndRef} />
+                            </div>
+                            <form onSubmit={handleSubmit} className="p-3 bg-[#0a0a0a] border-t border-white/10 flex gap-2">
+                                <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} placeholder="Escribe aquí..." className="flex-grow bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs text-white outline-none" />
+                                <button type="submit" className="bg-purple-600 p-2 rounded-xl">➜</button>
+                            </form>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        // --- COMPONENTE PRODUCT CARD ---
+        const ProductCard = ({ product, onSelect }) => (
+            <div onClick={() => onSelect(product)} className="bg-white/5 rounded-[2rem] border border-white/10 group cursor-pointer hover:border-purple-500 hover:-translate-y-2 transition-all p-4">
+                <div className="relative h-64 mb-4 overflow-hidden rounded-3xl">
+                    <img src={product.imageUrl} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                    <span className="absolute top-4 left-4 bg-purple-600 text-[9px] font-black px-3 py-1 rounded-lg uppercase">{product.category}</span>
+                </div>
+                <h3 className="font-bold text-white mb-2 uppercase text-sm tracking-tight group-hover:text-purple-400">{product.name}</h3>
+                <div className="flex items-center justify-between mt-auto">
+                    <span className="text-xl font-black italic">S/ {product.price.toFixed(2)}</span>
+                    <div className="bg-purple-600 p-3 rounded-2xl shadow-lg">🛒</div>
+                </div>
+            </div>
+        );
+
+        // --- APP ---
         function App() {
+            const [selected, setSelected] = useState(null);
+            
             return (
                 <div className="min-h-screen">
-                    <nav className="p-6 border-b border-gray-900 sticky top-0 bg-black/80 backdrop-blur-md z-50 flex justify-between items-center">
-                        <span className="text-purple-500 font-black text-2xl italic tracking-tighter">AR TECHNOLOGY STORE</span>
-                        <input type="text" placeholder="Buscar..." className="bg-[#111] border border-gray-800 rounded-full px-4 py-1 text-sm w-44 outline-none focus:border-purple-600" />
+                    <nav className="p-6 border-b border-white/5 sticky top-0 bg-black/90 backdrop-blur-md z-50 flex justify-between items-center">
+                        <span className="text-purple-500 font-black text-2xl italic tracking-tighter shimmer-text">AR TECHNOLOGY STORE</span>
                     </nav>
 
-                    <section className="p-6 max-w-7xl mx-auto">
-                        <div className="banner-yellow">
-                            <div className="z-10">
-                                <h2 className="text-black text-7xl font-black italic uppercase leading-[0.8] mb-4">AUDIO DE<br/>ALTO NIVEL</h2>
-                                <p className="text-black/60 font-bold uppercase tracking-[0.2em] text-sm">Expertos importadores directos en Rioja.</p>
-                            </div>
-                            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000" className="absolute right-0 top-0 h-full w-2/3 object-cover" style={{maskImage: 'linear-gradient(to left, black 70%, transparent)'}} />
-                        </div>
-                    </section>
-
-                    <section className="p-6 max-w-7xl mx-auto flex gap-4 overflow-x-auto">
-                        <button className="brand-btn active">TODOS</button>
-                        <button className="brand-btn">LENOVO</button>
-                        <button className="brand-btn">MONSTER</button>
-                        <button className="brand-btn">EDIFIER</button>
-                    </section>
-
-                    <section className="p-6 max-w-7xl mx-auto pb-20">
-                        <h3 className="text-4xl font-black italic uppercase mb-10 border-l-8 border-purple-600 pl-4 text-white">NUESTRO CATÁLOGO</h3>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                            <div className="bg-[#0a0a0a] border border-gray-900 rounded-[2rem] p-5 hover:border-purple-600 transition-all">
-                                <div className="bg-white/5 rounded-3xl h-48 mb-6 overflow-hidden flex items-center justify-center relative">
-                                    <span className="absolute top-3 left-3 bg-purple-600 text-[10px] font-black px-3 py-1 rounded-full uppercase">LENOVO</span>
-                                    <img src="https://images.unsplash.com/photo-1583394838336-acd977730f90?q=80&w=500" className="max-h-[80%] object-contain" />
+                    {!selected ? (
+                        <main className="p-6 max-w-7xl mx-auto">
+                            <div className="banner-yellow mb-10">
+                                <div className="z-10 relative max-w-lg">
+                                    <h2 className="text-black text-6xl font-black italic uppercase leading-[0.85] mb-4">AUDIO DE<br/>ALTO NIVEL</h2>
+                                    <p className="text-black/70 font-bold uppercase tracking-[0.25em] text-xs">Importadores directos en Rioja.</p>
                                 </div>
-                                <div className="text-center">
-                                    <h4 className="font-bold text-lg text-gray-200 mb-5 leading-tight uppercase">Lenovo XT80 Sport</h4>
-                                    <div className="flex justify-center items-center gap-4">
-                                        <span className="text-2xl font-black italic text-white">S/ 89.00</span>
-                                        <button className="bg-purple-600 p-3 rounded-2xl">
-                                            <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                                        </button>
-                                    </div>
-                                </div>
+                                <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000" className="absolute right-0 h-full w-2/3 object-cover" style={{maskImage: 'linear-gradient(to left, black 60%, transparent)'}} />
                             </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                                {PRODUCTS.map(p => <ProductCard key={p.id} product={p} onSelect={setSelected} />)}
+                            </div>
+                        </main>
+                    ) : (
+                        <div className="p-10 text-center uppercase font-black text-gray-500">
+                            Detalle de: {selected.name} <br/>
+                            <button onClick={() => setSelected(null)} className="mt-4 text-purple-500">Volver</button>
                         </div>
-                    </section>
+                    )}
+                    <AIChatWidget />
                 </div>
             );
         }
