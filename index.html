@@ -1,96 +1,44 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AR TECHNOLOGY STORE | Catálogo</title>
+    <title>Catálogo | AR TECHNOLOGY STORE</title>
+    
+    <meta name="description" content="Catálogo oficial de AR TECHNOLOGY STORE. Lo mejor en tecnología y audio en Rioja.">
+    <meta property="og:title" content="AR TECHNOLOGY STORE - Catálogo">
+    <meta property="og:description" content="Descubre nuestros productos y pide por WhatsApp. Calidad garantizada en Rioja.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000">
+    <meta property="og:type" content="website">
+    <meta name="theme-color" content="#9333ea">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #000; color: white; margin: 0; overflow-x: hidden; }
-        .header-mesh { background: linear-gradient(45deg, #000, #1a0b2e, #000); border-bottom: 1px solid #331a4d; }
-        .banner-yellow { 
-            background: #ffcc00; 
-            border-radius: 40px; 
-            height: 350px; 
-            position: relative; 
-            overflow: hidden; 
-            display: flex; 
-            align-items: center; 
-            padding: 0 60px;
-            margin: 20px 0;
-        }
-        .shimmer-text { 
-            background: linear-gradient(90deg, #fff, #a855f7, #fff); 
-            background-size: 200%; 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-            animation: shine 3s infinite; 
-        }
-        @keyframes shine { to { background-position: 200% center; } }
-        .brand-btn { background: #111; border: 1px solid #333; padding: 10px 25px; border-radius: 12px; font-weight: bold; font-size: 12px; color: #888; }
-        .brand-btn.active { background: #9333ea; color: white; border-color: #9333ea; }
-        .product-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 24px; transition: 0.3s; }
-        .product-card:hover { border-color: #9333ea; transform: translateY(-5px); }
-        .wa-float { position: fixed; bottom: 20px; right: 20px; background: #25d366; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(37,211,102,0.4); z-index: 100; }
+      body { font-family: 'Inter', sans-serif; background: #050505; }
+      .scrollbar-hide::-webkit-scrollbar { display: none; }
+      .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+      @keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+      .shimmer-text { background: linear-gradient(90deg, #a855f7, #ffffff, #a855f7); background-size: 200% auto; -webkit-background-clip: text; background-clip: text; animation: shimmer 3s linear infinite; }
+      .header-glass { background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      .animate-fade-in { animation: fadeIn 0.5s ease forwards; }
     </style>
-</head>
-<body>
-
-    <nav class="header-mesh p-5 flex justify-between items-center sticky top-0 z-50">
-        <div class="flex items-center gap-2">
-            <span class="text-purple-500 font-black text-2xl italic tracking-tighter">AR TECHNOLOGY STORE</span>
-        </div>
-        <input type="text" placeholder="Buscar..." class="bg-black border border-gray-800 rounded-full px-4 py-1 text-sm w-48 focus:border-purple-600 outline-none" />
-    </nav>
-
-    <main class="max-w-7xl mx-auto px-6">
-        <div class="banner-yellow">
-            <div class="z-10 relative">
-                <h2 class="text-black text-6xl font-black italic uppercase leading-[0.9] mb-4">AUDIO DE<br/>ALTO NIVEL</h2>
-                <p class="text-black/70 font-bold uppercase tracking-widest text-sm">Expertos importadores directos en Rioja.</p>
-            </div>
-            <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000" class="absolute right-0 top-0 h-full w-2/3 object-cover" style="mask-image: linear-gradient(to left, black 60%, transparent)">
-        </div>
-
-        <div class="flex gap-3 overflow-x-auto py-6">
-            <button class="brand-btn active">TODOS</button>
-            <button class="brand-btn">LENOVO</button>
-            <button class="brand-btn">MONSTER</button>
-            <button class="brand-btn">EDIFIER</button>
-            <button class="brand-btn">HAYLOU</button>
-        </div>
-
-        <div class="flex justify-between items-end mb-8 mt-4">
-            <div>
-                <h3 class="text-4xl font-black italic uppercase tracking-tighter">NUESTRO CATÁLOGO</h3>
-                <p class="text-[10px] text-purple-500 font-bold uppercase tracking-[0.3em]">Actualizado hoy</p>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 pb-20">
-            <div class="product-card p-4">
-                <div class="bg-white/5 rounded-2xl h-44 mb-4 overflow-hidden flex items-center justify-center relative">
-                    <span class="absolute top-2 left-2 bg-purple-600 text-[9px] font-black px-2 py-1 rounded">LENOVO</span>
-                    <img src="https://images.unsplash.com/photo-1583394838336-acd977730f90?q=80&w=500" class="max-h-full object-contain p-4">
-                </div>
-                <div class="text-center">
-                    <span class="text-green-500 font-bold text-[10px] uppercase">En Stock</span>
-                    <h4 class="font-bold text-sm text-gray-300 mt-1 mb-4">Lenovo XT80 Sport</h4>
-                    <div class="flex justify-center items-center gap-3">
-                        <span class="text-xl font-black italic text-white">S/ 89.00</span>
-                        <a href="https://wa.me/tu-numero-aqui" class="bg-purple-600 p-2 rounded-xl">
-                            <svg width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <a href="https://wa.me/tu-numero-aqui" class="wa-float">
-        <svg width="35" height="35" fill="white" viewBox="0 0 24 24"><path d="M12.031 6.172c-2.135 0-3.998 1.463-4.503 3.537-.09.371-.469.596-.84.506s-.597-.468-.506-.839c.677-2.781 3.177-4.744 6.046-4.744 3.391 0 6.151 2.76 6.151 6.151 0 1.838-1.144 3.511-2.854 4.183-1.745.686-2.583 2.502-1.897 4.247.135.342-.027.729-.369.864-.343.136-.729-.028-.864-.369-.877-2.23.155-4.526 2.46-5.433 1.258-.495 2.1-1.728 2.1-3.088 0-2.651-2.156-4.807-4.808-4.807z"/></svg>
-    </a>
-
-</body>
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "@google/genai": "https://esm.sh/@google/genai@1.34.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+  }
+}
+</script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./index.tsx"></script>
+  </body>
 </html>
